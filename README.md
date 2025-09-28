@@ -11,6 +11,8 @@ El emulador incluye:
 - ✅ Interfaz serie a 115200 baud
 - ✅ Compatibilidad con minicom y otros terminales
 
+Más información en Minibots: [https://minibots.wordpress.com/2025/09/28/emulador-de-apple-i-con-esp32]
+
 ## 🏗️ Arquitectura
 
 ### Componentes Principales
