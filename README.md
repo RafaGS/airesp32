@@ -200,7 +200,7 @@ airesp32/
 
 Este proyecto está bajo **GNU Lesser General Public License v3.0**.
 
-Basado en AIRE de Christian Bauer y otros contribuidores.
+Basado en AIRE.
 
 ## 🙏 Agradecimientos
 
