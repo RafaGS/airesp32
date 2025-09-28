@@ -53,7 +53,6 @@
     #endif
     
     extern int ACTION;
-    extern uint8_t key_available;
     void configure_terminal(void);
     uint8_t check_keyboard_ready(void);
     uint8_t read_keyboard(void);

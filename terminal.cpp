@@ -21,8 +21,6 @@
 // Simple timing for ESP32
 static unsigned long last_char_timestamp = 0;
 static unsigned long last_key_timestamp = 0;
-static uint8_t last_key = 0;
-uint8_t key_available = 0;
 
 int ACTION = 0;
 
@@ -36,40 +34,32 @@ void configure_terminal(void){
     // Just ensure we have a clean state
     last_char_timestamp = millis();
     last_key_timestamp = millis();
-    key_available = 0;
 }
 
 
 
 // Checks if a key has been typed
 uint8_t check_keyboard_ready(void){
-    if (!key_available && Serial.available() > 0) {
-        int ch = Serial.read();
-        
-        if (ch != -1) {  // Valid character received
-            if (ch == '\n' || ch == '\r') {  // Handle different line endings
-                ch = 0x0D;   // Apple 1 uses CR
-            } else if (ch == 0x7F || ch == 0x08) {  // Handle backspace (DEL or BS)
-                ch = 0x08;   // Apple 1 uses CTRL+H for backspace
-            }
-            // Only convert to uppercase for printable characters, not control chars
-            if (ch >= 0x20 && ch <= 0x7E) {
-                ch = toupper(ch);
-            }
-            last_key = ((uint8_t)ch) | 0x80; // Bit 7 set to one
-            last_key_timestamp = millis();
-            key_available = 1;
-            return 1;
-        }
-    }
-    
-    return key_available;
+    return Serial.available() > 0;
 }
 
 
 
 uint8_t read_keyboard(void){
-    return last_key;
+    if (Serial.available() > 0) {
+        int ch = Serial.read();
+        if (ch != -1) {
+            if (ch == '\n' || ch == '\r') {
+                ch = 0x0D;   // Apple 1 uses CR
+            }
+            // Convert to uppercase for printable characters
+            if (ch >= 0x20 && ch <= 0x7E) {
+                ch = toupper(ch);
+            }
+            return ((uint8_t)ch) | 0x80; // Bit 7 set to one
+        }
+    }
+    return 0x80; // Return something safe if no data
 }
 
 

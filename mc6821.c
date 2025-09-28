@@ -80,8 +80,6 @@ uint8_t mc6821_readbyte(uint16_t address){
             case 0: // PRA or DDRA
                 if (CRA & 0x04){
                     data = read_keyboard();
-                    // After reading the character, mark it as consumed
-                    key_available = 0;
                 } else {
                     data = DDRA;
                 }
@@ -91,7 +89,7 @@ uint8_t mc6821_readbyte(uint16_t address){
             case 1: // CRA
                 data = CRA & 0x7F;
                 // Check if chars are available and return interrupt status
-                if (key_available){
+                if (check_keyboard_ready()){
                     data |= 0x80;
                 } 
                 break;
